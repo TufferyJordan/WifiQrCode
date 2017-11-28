@@ -1,0 +1,14 @@
+# Ignore file for Android
+# =======================
+*.iml
+.gradle
+/local.properties
+/.idea/workspace.xml
+/.idea/libraries
+/.idea/dbnavigator.xml
+/.idea/misc.xml
+/.idea/modules.xml
+.DS_Store
+/build
+/captures
+.externalNativeBuild
