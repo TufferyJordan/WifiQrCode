@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">WifiQrCode</string>
+    <string name="title_navigation_saved_qr_codes">Saved</string>
+    <string name="title_navigation_qr_code_reader">Reader</string>
+    <string name="title_navigation_qr_code_generator">Generator</string>
+</resources>
