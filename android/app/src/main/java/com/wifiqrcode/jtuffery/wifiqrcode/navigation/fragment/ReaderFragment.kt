@@ -1,12 +1,12 @@
 package com.wifiqrcode.jtuffery.wifiqrcode.navigation.fragment
 
-import android.content.Context
+import android.hardware.Camera
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.google.zxing.integration.android.IntentIntegrator
 import com.wifiqrcode.jtuffery.wifiqrcode.R
 
 class ReaderFragment : Fragment() {
@@ -14,7 +14,12 @@ class ReaderFragment : Fragment() {
         fun newInstance(): ReaderFragment = ReaderFragment()
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? = layoutInflater.inflate(R.layout.fragment_reader, container, false)
+    private var integrator: IntentIntegrator? = null
+
+    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val rootView = layoutInflater.inflate(R.layout.fragment_reader, container, false)
+        return rootView
+    }
 
 
     override fun onStart() {

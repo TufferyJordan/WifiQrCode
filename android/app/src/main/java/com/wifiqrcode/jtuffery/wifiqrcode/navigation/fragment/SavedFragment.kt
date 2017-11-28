@@ -14,10 +14,6 @@ class SavedFragment : Fragment() {
         fun newInstance(): SavedFragment = SavedFragment()
     }
 
-    override fun onInflate(context: Context?, attrs: AttributeSet?, savedInstanceState: Bundle?) {
-        super.onInflate(context, attrs, savedInstanceState)
-    }
-
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? = layoutInflater.inflate(R.layout.fragment_saved, container, false)
 
     override fun onStart() {
