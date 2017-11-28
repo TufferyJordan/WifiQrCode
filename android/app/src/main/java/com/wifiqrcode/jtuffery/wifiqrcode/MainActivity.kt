@@ -13,15 +13,15 @@ class MainActivity : AppCompatActivity() {
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_saved_qr_codes -> {
-                supportFragmentManager.beginTransaction().add(R.id.main_fragment, SavedFragment.newInstance()).commit()
+                supportFragmentManager.beginTransaction().replace(R.id.main_fragment, SavedFragment.newInstance()).commit()
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_qr_code_reader -> {
-                supportFragmentManager.beginTransaction().add(R.id.main_fragment, ReaderFragment.newInstance()).commit()
+                supportFragmentManager.beginTransaction().replace(R.id.main_fragment, ReaderFragment.newInstance()).commit()
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_qr_code_generator -> {
-                supportFragmentManager.beginTransaction().add(R.id.main_fragment, GeneratorFragment.newInstance()).commit()
+                supportFragmentManager.beginTransaction().replace(R.id.main_fragment, GeneratorFragment.newInstance()).commit()
                 return@OnNavigationItemSelectedListener true
             }
         }
