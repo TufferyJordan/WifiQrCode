@@ -10,18 +10,38 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
+    private var savedFragment: SavedFragment? = null
+    get(){
+        if(field == null)
+            field = SavedFragment.newInstance()
+        return field
+    }
+    private var readerFragment: ReaderFragment? = null
+        get(){
+            if(field == null)
+                field = ReaderFragment.newInstance()
+            return field
+        }
+    private var generatorFragment: GeneratorFragment? = null
+        get(){
+            if(field == null)
+                field = GeneratorFragment.newInstance()
+            return field
+        }
+
+
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_saved_qr_codes -> {
-                supportFragmentManager.beginTransaction().replace(R.id.main_fragment, SavedFragment.newInstance()).commit()
+                supportFragmentManager.beginTransaction().replace(R.id.main_fragment, savedFragment).commit()
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_qr_code_reader -> {
-                supportFragmentManager.beginTransaction().replace(R.id.main_fragment, ReaderFragment.newInstance()).commit()
+                supportFragmentManager.beginTransaction().replace(R.id.main_fragment, readerFragment).commit()
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_qr_code_generator -> {
-                supportFragmentManager.beginTransaction().replace(R.id.main_fragment, GeneratorFragment.newInstance()).commit()
+                supportFragmentManager.beginTransaction().replace(R.id.main_fragment, generatorFragment).commit()
                 return@OnNavigationItemSelectedListener true
             }
         }
