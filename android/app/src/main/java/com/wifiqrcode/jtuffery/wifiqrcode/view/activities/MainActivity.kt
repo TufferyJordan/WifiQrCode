@@ -1,11 +1,12 @@
-package com.wifiqrcode.jtuffery.wifiqrcode
+package com.wifiqrcode.jtuffery.wifiqrcode.view.activities
 
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AppCompatActivity
-import com.wifiqrcode.jtuffery.wifiqrcode.navigation.fragment.GeneratorFragment
-import com.wifiqrcode.jtuffery.wifiqrcode.navigation.fragment.ReaderFragment
-import com.wifiqrcode.jtuffery.wifiqrcode.navigation.fragment.SavedFragment
+import com.wifiqrcode.jtuffery.wifiqrcode.R
+import com.wifiqrcode.jtuffery.wifiqrcode.view.fragments.GeneratorFragment
+import com.wifiqrcode.jtuffery.wifiqrcode.view.fragments.ReaderFragment
+import com.wifiqrcode.jtuffery.wifiqrcode.view.fragments.SavedFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {

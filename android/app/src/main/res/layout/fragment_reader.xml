@@ -6,7 +6,7 @@
     android:background="@color/colorPrimaryDark">
 
     <fragment
-        android:name="com.wifiqrcode.jtuffery.wifiqrcode.navigation.fragment.ScannerFragment"
+        android:name="com.wifiqrcode.jtuffery.wifiqrcode.view.fragments.ScannerFragment"
         android:id="@+id/scanner_fragment"
         android:tag="scannerFragment"
         android:layout_height="0dp"
@@ -14,9 +14,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/reader_flash_button"
-
-        />
+        app:layout_constraintBottom_toTopOf="@+id/reader_flash_button" />
 
     <Button
         android:id="@+id/reader_flash_button"
