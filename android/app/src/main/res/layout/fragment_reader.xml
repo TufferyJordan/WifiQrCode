@@ -6,9 +6,8 @@
     android:background="@color/colorPrimaryDark">
 
     <fragment
-        android:name="com.wifiqrcode.jtuffery.wifiqrcode.view.fragments.ScannerFragment"
+        android:name="com.wifiqrcode.jtuffery.wifiqrcode.view.fragments.others.ScannerFragment"
         android:id="@+id/scanner_fragment"
-        android:tag="scannerFragment"
         android:layout_height="0dp"
         android:layout_width="0dp"
         app:layout_constraintTop_toTopOf="parent"

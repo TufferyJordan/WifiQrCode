@@ -1,4 +1,4 @@
-package com.wifiqrcode.jtuffery.wifiqrcode.view.fragments
+package com.wifiqrcode.jtuffery.wifiqrcode.view.fragments.others
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -11,6 +11,7 @@ import me.dm7.barcodescanner.zxing.ZXingScannerView
 
 class ScannerFragment : Fragment(), ZXingScannerView.ResultHandler {
     private var scannerView: ZXingScannerView? = null
+    private var isFlashing = false
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         scannerView = ZXingScannerView(activity)
@@ -31,5 +32,10 @@ class ScannerFragment : Fragment(), ZXingScannerView.ResultHandler {
     override fun handleResult(result: Result?) {
         Log.e("SCANNERFRAGMENT", result?.text)
         scannerView?.resumeCameraPreview(this)
+    }
+
+    fun onFlashButton() {
+        isFlashing = !isFlashing
+        scannerView?.flash = isFlashing
     }
 }
