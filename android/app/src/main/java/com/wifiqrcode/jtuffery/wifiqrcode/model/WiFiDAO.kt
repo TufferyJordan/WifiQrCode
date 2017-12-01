@@ -4,6 +4,7 @@ import com.google.gson.JsonElement
 import com.google.gson.JsonParser
 
 data class WiFiDAO(var ssid: String, var password: String, var securityType: SecurityType) {
+    // {"ssid":"DXOEXT", "password":"waggery-laser-organdy", "securityType":"wpa"}
     companion object {
         fun fromJsonString(json: String?): WiFiDAO {
             val jsonObject = JsonParser().parse(json).asJsonObject
@@ -16,7 +17,7 @@ data class WiFiDAO(var ssid: String, var password: String, var securityType: Sec
                 "wpa" -> SecurityType.WPA
                 "wpa2" -> SecurityType.WPA2
                 "wep" -> SecurityType.WEP
-                else -> throw IllegalArgumentException()
+                else -> SecurityType.BAD_SECURITY_TYPE
             }
         }
     }
@@ -25,5 +26,7 @@ data class WiFiDAO(var ssid: String, var password: String, var securityType: Sec
 enum class SecurityType {
     WPA,
     WPA2,
-    WEP
+    WEP,
+    NONE,
+    BAD_SECURITY_TYPE
 }
