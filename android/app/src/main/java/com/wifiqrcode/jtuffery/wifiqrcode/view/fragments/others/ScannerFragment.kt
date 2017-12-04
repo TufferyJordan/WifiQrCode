@@ -1,15 +1,18 @@
 package com.wifiqrcode.jtuffery.wifiqrcode.view.fragments.others
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Service
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.net.wifi.WifiConfiguration
 import android.net.wifi.WifiManager
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.content.LocalBroadcastManager
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,17 +26,39 @@ import me.dm7.barcodescanner.zxing.ZXingScannerView
 class ScannerFragment : Fragment(), ZXingScannerView.ResultHandler, ScannerView {
     private var presenter: ScannerPresenter? = null
 
+    private lateinit var wifiConfiguration: WifiConfiguration
+
     private var scannerView: ZXingScannerView? = null
     private var isFlashing = false
 
     private var receiver = object : BroadcastReceiver() {
+        @SuppressLint("LogNotTimber")
         override fun onReceive(context: Context?, intent: Intent?) {
             when (intent?.action) {
                 MainActivity.ACTION_REQUEST_PERMISSION_CHANGE_WIFI_STATE_GRANTED -> {
-                    if (presenter?.addWifiNetwork() == ScannerPresenterImpl.WIFI_CONNECTION_ERROR) {
-                        showWifiConnexionFailed()
+                    val wifiManager = activity.applicationContext.getSystemService(Service.WIFI_SERVICE) as WifiManager
+                    if (!wifiManager.isWifiEnabled) wifiManager.isWifiEnabled = true
+
+                    wifiManager.disconnect()
+
+                    val configuredNetworks = wifiManager.configuredNetworks
+
+                    if (getConfiguration(configuredNetworks, wifiConfiguration.SSID) == null) {
+                        wifiConfiguration.priority = getMaxNetworkPriority(configuredNetworks) + 1
+                        if(wifiManager.addNetwork(wifiConfiguration) == -1){
+                            Log.w("ScannerFragment", "addNetwork returned -1")
+                        }
                     } else {
+                        wifiConfiguration.priority = getMaxNetworkPriority(configuredNetworks) + 1
+                        if(wifiManager.updateNetwork(wifiConfiguration) == -1){
+                            Log.w("ScannerFragment", "updateNetwork returned -1")
+                        }
+                    }
+
+                    if (wifiManager.enableNetwork(wifiConfiguration.networkId, true)) {
                         showWifiConnexionSuccess()
+                    } else {
+                        showWifiConnexionFailed()
                     }
                 }
             }
@@ -50,7 +75,6 @@ class ScannerFragment : Fragment(), ZXingScannerView.ResultHandler, ScannerView 
     override fun onResume() {
         super.onResume()
         presenter?.view = this
-        presenter?.wifiManager = activity.applicationContext.getSystemService(Service.WIFI_SERVICE) as WifiManager
 
         LocalBroadcastManager.getInstance(context).registerReceiver(receiver, IntentFilter(MainActivity.ACTION_REQUEST_PERMISSION_CHANGE_WIFI_STATE_GRANTED))
 
@@ -62,7 +86,6 @@ class ScannerFragment : Fragment(), ZXingScannerView.ResultHandler, ScannerView 
 
         LocalBroadcastManager.getInstance(context).unregisterReceiver(receiver)
 
-        presenter?.wifiManager = null
         presenter?.view = null
         super.onPause()
     }
@@ -72,8 +95,13 @@ class ScannerFragment : Fragment(), ZXingScannerView.ResultHandler, ScannerView 
         scannerView?.resumeCameraPreview(this)
     }
 
+    override fun handleWifiConnexionScanned(wifiConfiguration: WifiConfiguration) {
+        this.wifiConfiguration = wifiConfiguration
+        MainActivity.checkPermissionAndAskIfItIsNeeded(activity, Manifest.permission.CHANGE_WIFI_STATE)
+    }
+
     override fun showWifiConnexionSuccess() {
-        Toast.makeText(context, "Wifi Connected !", Toast.LENGTH_LONG).show()
+        Toast.makeText(context, "Wifi connexion success !", Toast.LENGTH_LONG).show()
     }
 
     override fun showWifiConnexionFailed() {
@@ -84,19 +112,37 @@ class ScannerFragment : Fragment(), ZXingScannerView.ResultHandler, ScannerView 
         Toast.makeText(context, "Bad QrCode!", Toast.LENGTH_LONG).show()
     }
 
-    override fun checkPermission() {
-        MainActivity.checkPermissionAndAskIfItIsNeeded(activity, Manifest.permission.CHANGE_WIFI_STATE)
-    }
-
     fun onFlashButton() {
         isFlashing = !isFlashing
         scannerView?.flash = isFlashing
     }
+
+    private fun getConfiguration(configuredNetworks: List<WifiConfiguration>, ssid: String): WifiConfiguration? {
+        configuredNetworks.forEach {
+            if (it.SSID == ssid) {
+                return it
+            }
+        }
+
+        return null
+    }
+
+    private fun getMaxNetworkPriority(configuredNetworks: List<WifiConfiguration>): Int {
+        var maxPriority = 0
+
+        configuredNetworks.forEach {
+            if (it.priority > maxPriority) {
+                maxPriority = it.priority
+            }
+        }
+
+        return maxPriority
+    }
 }
 
 interface ScannerView {
+    fun handleWifiConnexionScanned(wifiConfiguration: WifiConfiguration)
     fun showWifiConnexionSuccess()
     fun showWifiConnexionFailed()
     fun showBadScannedQrCode()
-    fun checkPermission()
 }

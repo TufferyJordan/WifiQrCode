@@ -12,8 +12,9 @@ data class WiFiDAO(var ssid: String, var password: String, var securityType: Sec
                     jsonObject.get("password").asString,
                     jsonToSecurityElement(jsonObject.get("securityType")))
         }
+
         private fun jsonToSecurityElement(element: JsonElement): SecurityType {
-            return when(element.asString) {
+            return when (element.asString) {
                 "wpa" -> SecurityType.WPA
                 "wpa2" -> SecurityType.WPA2
                 "wep" -> SecurityType.WEP
