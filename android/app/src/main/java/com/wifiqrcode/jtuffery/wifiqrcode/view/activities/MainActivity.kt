@@ -1,12 +1,14 @@
 package com.wifiqrcode.jtuffery.wifiqrcode.view.activities
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v4.app.ActivityCompat
 import android.support.v4.app.FragmentActivity
 import android.support.v4.content.ContextCompat
+import android.support.v4.content.LocalBroadcastManager
 import android.support.v7.app.AppCompatActivity
 import com.wifiqrcode.jtuffery.wifiqrcode.R
 import com.wifiqrcode.jtuffery.wifiqrcode.view.fragments.navigation.GeneratorFragment
@@ -49,7 +51,9 @@ class MainActivity : AppCompatActivity(), Listener {
             if (!grantResults.contains(PackageManager.PERMISSION_GRANTED)) {
                 goToGeneratorFragment()
             }
-        } else {
+        } else if (requestCode == MainActivity.REQUEST_PERMISSION_CHANGE_WIFI_STATE) {
+            LocalBroadcastManager.getInstance(this).sendBroadcast(Intent(MainActivity.ACTION_REQUEST_PERMISSION_CHANGE_WIFI_STATE_GRANTED))
+        }else {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         }
     }
@@ -67,19 +71,34 @@ class MainActivity : AppCompatActivity(), Listener {
     }
 
     companion object {
-        val REQUEST_PERMISSION_CAMERA = 0
+        const val ACTION_REQUEST_PERMISSION_CAMERA = "ACTION_REQUEST_PERMISSION_CAMERA"
+        const val ACTION_REQUEST_PERMISSION_CHANGE_WIFI_STATE_GRANTED = "ACTION_REQUEST_PERMISSION_CHANGE_WIFI_STATE_GRANTED"
+
+        const val REQUEST_PERMISSION_CAMERA = 0
+        const val REQUEST_PERMISSION_CHANGE_WIFI_STATE = 1
 
         fun checkPermissionAndAskIfItIsNeeded(activity: FragmentActivity, permission: String) {
             if (ContextCompat.checkSelfPermission(activity,
                     permission) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(activity,
                         arrayOf(permission), getRightRequestCode(permission))
+            } else {
+                LocalBroadcastManager.getInstance(activity).sendBroadcast(Intent(getRightActionRequest(permission)))
             }
         }
 
         private fun getRightRequestCode(permission: String): Int {
             return when (permission) {
                 Manifest.permission.CAMERA -> REQUEST_PERMISSION_CAMERA
+                Manifest.permission.CHANGE_WIFI_STATE -> REQUEST_PERMISSION_CHANGE_WIFI_STATE
+                else -> throw IllegalArgumentException("It's not the right permission !")
+            }
+        }
+
+        private fun getRightActionRequest(permission: String): String {
+            return when(permission) {
+                Manifest.permission.CAMERA -> ACTION_REQUEST_PERMISSION_CAMERA
+                Manifest.permission.CHANGE_WIFI_STATE -> ACTION_REQUEST_PERMISSION_CHANGE_WIFI_STATE_GRANTED
                 else -> throw IllegalArgumentException("It's not the right permission !")
             }
         }
