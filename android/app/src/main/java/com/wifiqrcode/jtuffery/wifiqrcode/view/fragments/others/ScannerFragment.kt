@@ -86,6 +86,7 @@ class ScannerFragment : Fragment(), ZXingScannerView.ResultHandler, ScannerView 
     }
 
     override fun handleResult(result: Result?) {
+        Log.w("READED :", result?.text)
         presenter.receiveJSON(result?.text)
         scannerView.resumeCameraPreview(this)
     }
