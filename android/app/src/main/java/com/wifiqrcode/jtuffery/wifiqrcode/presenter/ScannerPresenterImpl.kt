@@ -10,7 +10,7 @@ class ScannerPresenterImpl : ScannerPresenter {
     override var view: ScannerView? = null
 
     override fun receiveJSON(json: String?) {
-        val wifi = WiFiDAO.fromJsonString(json)
+        val wifi = WiFiDAO.fromJsonToString(json)
         val wifiConfiguration = WifiConfiguration()
         wifiConfiguration.SSID = "\"${wifi.ssid}\""
 

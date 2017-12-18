@@ -24,12 +24,11 @@ import com.wifiqrcode.jtuffery.wifiqrcode.view.activities.MainActivity
 import me.dm7.barcodescanner.zxing.ZXingScannerView
 
 class ScannerFragment : Fragment(), ZXingScannerView.ResultHandler, ScannerView {
-    private var presenter: ScannerPresenter? = null
+    private lateinit var presenter: ScannerPresenter
 
-    private lateinit var wifiConfiguration: WifiConfiguration
+    private var wifiConfiguration: WifiConfiguration? = null
 
-    private var scannerView: ZXingScannerView? = null
-    private var isFlashing = false
+    private lateinit var scannerView: ZXingScannerView
 
     private var receiver = object : BroadcastReceiver() {
         @SuppressLint("LogNotTimber")
@@ -42,24 +41,22 @@ class ScannerFragment : Fragment(), ZXingScannerView.ResultHandler, ScannerView 
                     wifiManager.disconnect()
 
                     val configuredNetworks = wifiManager.configuredNetworks
+                    val lastConfiguration = getConfiguration(configuredNetworks, wifiConfiguration?.SSID)
 
-                    if (getConfiguration(configuredNetworks, wifiConfiguration.SSID) == null) {
-                        wifiConfiguration.priority = getMaxNetworkPriority(configuredNetworks) + 1
+                    if (lastConfiguration == null) {
+                        wifiConfiguration?.priority = getMaxNetworkPriority(configuredNetworks) + 1
                         if(wifiManager.addNetwork(wifiConfiguration) == -1){
                             Log.w("ScannerFragment", "addNetwork returned -1")
                         }
                     } else {
-                        wifiConfiguration.priority = getMaxNetworkPriority(configuredNetworks) + 1
+                        wifiConfiguration?.priority = getMaxNetworkPriority(configuredNetworks) + 1
+                        wifiConfiguration?.networkId = lastConfiguration.networkId
                         if(wifiManager.updateNetwork(wifiConfiguration) == -1){
                             Log.w("ScannerFragment", "updateNetwork returned -1")
                         }
                     }
 
-                    if (wifiManager.enableNetwork(wifiConfiguration.networkId, true)) {
-                        showWifiConnexionSuccess()
-                    } else {
-                        showWifiConnexionFailed()
-                    }
+                    wifiManager.enableNetwork(wifiConfiguration?.networkId!!, true)
                 }
             }
         }
@@ -68,31 +65,29 @@ class ScannerFragment : Fragment(), ZXingScannerView.ResultHandler, ScannerView 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         scannerView = ZXingScannerView(activity)
         presenter = ScannerPresenterImpl()
-        scannerView?.setResultHandler(this)
+        scannerView.setResultHandler(this)
         return scannerView
     }
 
-    override fun onResume() {
-        super.onResume()
-        presenter?.view = this
+    override fun onStart() {
+        super.onStart()
+        presenter.view = this
 
         LocalBroadcastManager.getInstance(context).registerReceiver(receiver, IntentFilter(MainActivity.ACTION_REQUEST_PERMISSION_CHANGE_WIFI_STATE_GRANTED))
-
-        scannerView?.startCamera()
+        scannerView.startCamera()
     }
 
-    override fun onPause() {
-        scannerView?.stopCamera()
-
+    override fun onStop() {
+        scannerView.stopCamera()
         LocalBroadcastManager.getInstance(context).unregisterReceiver(receiver)
 
-        presenter?.view = null
-        super.onPause()
+        presenter.view = null
+        super.onStop()
     }
 
     override fun handleResult(result: Result?) {
-        presenter?.receiveJSON(result?.text)
-        scannerView?.resumeCameraPreview(this)
+        presenter.receiveJSON(result?.text)
+        scannerView.resumeCameraPreview(this)
     }
 
     override fun handleWifiConnexionScanned(wifiConfiguration: WifiConfiguration) {
@@ -113,11 +108,10 @@ class ScannerFragment : Fragment(), ZXingScannerView.ResultHandler, ScannerView 
     }
 
     fun onFlashButton() {
-        isFlashing = !isFlashing
-        scannerView?.flash = isFlashing
+        scannerView.flash = !scannerView.flash
     }
 
-    private fun getConfiguration(configuredNetworks: List<WifiConfiguration>, ssid: String): WifiConfiguration? {
+    private fun getConfiguration(configuredNetworks: List<WifiConfiguration>, ssid: String?): WifiConfiguration? {
         configuredNetworks.forEach {
             if (it.SSID == ssid) {
                 return it
