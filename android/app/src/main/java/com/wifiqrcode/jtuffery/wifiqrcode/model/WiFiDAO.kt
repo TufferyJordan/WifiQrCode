@@ -24,27 +24,21 @@ data class WiFiDAO(var ssid: String, var password: String, var securityType: Sec
                 else -> SecurityType.BAD_SECURITY_TYPE
             }
         }
-        private fun securityElementToString(element: SecurityType): String {
-            return when (element) {
-                SecurityType.WPA -> "wpa"
-                SecurityType.WPA2 -> "wpa2"
-                SecurityType.WEP -> "wep"
-                else -> "badSecurityType"
-            }
-        }
     }
 
     fun toJson() : String = JSONObject().apply {
             put("ssid", ssid)
             put("password", password)
-            put("securityType", securityElementToString(securityType))
+            put("securityType", securityType.friendlyName)
         }.toString()
 }
 
-enum class SecurityType {
-    WPA,
-    WPA2,
-    WEP,
-    NONE,
-    BAD_SECURITY_TYPE
+enum class SecurityType(val friendlyName: String) {
+    WPA("wpa"),
+    WPA2("wpa2"),
+    WEP("wep"),
+    NONE("none"),
+    BAD_SECURITY_TYPE("badSecurityType");
+
+    override fun toString(): String = friendlyName
 }
