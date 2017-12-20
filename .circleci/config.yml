@@ -4,7 +4,7 @@
 version: 2
 jobs:
   build:
-    working_directory: ~/project
+    working_directory: ~/project/android
     docker:
       - image: circleci/android:api-27-alpha
 
