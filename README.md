@@ -16,10 +16,10 @@ For this purpose, The Minimum Valuable Product will have 3 core features :
 * QR Writer library
 
 ## Used Libraries
-### [Qr generator](https://github.com/androidmads/QRGenerator)
-### [BarcodeScanner](https://github.com/dm77/barcodescanner)
-### [Mockito](https://github.com/mockito/mockito)
-### [RXKotlin](https://github.com/ReactiveX/RxKotlin)
+##### [Qr generator](https://github.com/androidmads/QRGenerator)
+##### [BarcodeScanner](https://github.com/dm77/barcodescanner)
+##### [Mockito](https://github.com/mockito/mockito)
+##### [RXKotlin](https://github.com/ReactiveX/RxKotlin)
 
 ## [License](LICENSE)
 
