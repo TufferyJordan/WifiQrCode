@@ -9,17 +9,11 @@ For this purpose, The Minimum Valuable Product will have 3 core features :
 * The "Reader" page, which allow you to read with your phone camera QR Code and connect you if the QRCode is formatted as we do.
 * The "Generator" page, which allow you to create a QR Code from your wifi information. You can also save the generated QR Code.
 
-## What we will use
-* RXKotlin
-* MVP Architecture
-* QR Reader library
-* QR Writer library
-
 ## Used Libraries
-##### [Qr generator](https://github.com/androidmads/QRGenerator)
-##### [BarcodeScanner](https://github.com/dm77/barcodescanner)
-##### [Mockito](https://github.com/mockito/mockito)
-##### [RXKotlin](https://github.com/ReactiveX/RxKotlin)
+ * [Qr generator](https://github.com/androidmads/QRGenerator)
+ * [BarcodeScanner](https://github.com/dm77/barcodescanner)
+ * [Mockito](https://github.com/mockito/mockito)
+ * [RXKotlin](https://github.com/ReactiveX/RxKotlin)
 
 ## [License](LICENSE)
 
