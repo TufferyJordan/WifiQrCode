@@ -1,4 +1,3 @@
-![Image de Wifi](https://www.wi-fi.org/sites/default/files/images/logos/Wi-Fi-B-W.jpg) ![Image de QR Code](http://stonetestweb.azurewebsites.net/img.aspx?custid=1&username=public&codetype=QR&EClevel=0&data=sample)
 # Share Your Wifi !
 ## Disclaimer
 This project is about creating an Android app exclusively coded in Kotlin. For the moment, the project is only on Github but our goal is to publish it on the Play Store.
@@ -20,3 +19,5 @@ For this purpose, The Minimum Valuable Product will have 3 core features :
 
 ## Licence
 ### [TO BE DONE]
+
+![Image de Wifi](https://www.wi-fi.org/sites/default/files/images/logos/Wi-Fi-B-W.jpg) ![Image de QR Code](http://stonetestweb.azurewebsites.net/img.aspx?custid=1&username=public&codetype=QR&EClevel=0&data=sample)
