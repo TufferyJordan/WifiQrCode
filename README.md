@@ -1,4 +1,5 @@
 # Share Your Wifi !
+#### Circle Ci status for master : ![Image du status de master sur circle ci](https://circleci.com/gh/TufferyJordan/WifiQrCode/tree/master.png?circle-token=0263721f1457026f4cefaec0d039fa71c78525b3)
 ## Disclaimer
 This project is about creating an Android app exclusively coded in Kotlin. For the moment, the project is only on Github but our goal is to publish it on the Play Store.
 ## Description
