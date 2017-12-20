@@ -35,28 +35,27 @@ class ScannerFragment : Fragment(), ZXingScannerView.ResultHandler, ScannerView 
         override fun onReceive(context: Context?, intent: Intent?) {
             when (intent?.action) {
                 MainActivity.ACTION_REQUEST_PERMISSION_CHANGE_WIFI_STATE_GRANTED -> {
-                    val wifiManager = activity.applicationContext.getSystemService(Service.WIFI_SERVICE) as WifiManager
-                    if (!wifiManager.isWifiEnabled) wifiManager.isWifiEnabled = true
+                    (activity.applicationContext.getSystemService(Service.WIFI_SERVICE) as WifiManager).apply {
+                        if (!isWifiEnabled) isWifiEnabled = true
+                        disconnect()
 
-                    wifiManager.disconnect()
+                        val lastConfiguration = getConfiguration(configuredNetworks, wifiConfiguration?.SSID)
 
-                    val configuredNetworks = wifiManager.configuredNetworks
-                    val lastConfiguration = getConfiguration(configuredNetworks, wifiConfiguration?.SSID)
-
-                    if (lastConfiguration == null) {
-                        wifiConfiguration?.priority = getMaxNetworkPriority(configuredNetworks) + 1
-                        if(wifiManager.addNetwork(wifiConfiguration) == -1){
-                            Log.w("ScannerFragment", "addNetwork returned -1")
+                        if (lastConfiguration == null) {
+                            wifiConfiguration?.priority = getMaxNetworkPriority(configuredNetworks) + 1
+                            if (addNetwork(wifiConfiguration) == -1) {
+                                Log.w("ScannerFragment", "addNetwork returned -1")
+                            }
+                        } else {
+                            wifiConfiguration?.priority = getMaxNetworkPriority(configuredNetworks) + 1
+                            wifiConfiguration?.networkId = lastConfiguration.networkId
+                            if (updateNetwork(wifiConfiguration) == -1) {
+                                Log.w("ScannerFragment", "updateNetwork returned -1")
+                            }
                         }
-                    } else {
-                        wifiConfiguration?.priority = getMaxNetworkPriority(configuredNetworks) + 1
-                        wifiConfiguration?.networkId = lastConfiguration.networkId
-                        if(wifiManager.updateNetwork(wifiConfiguration) == -1){
-                            Log.w("ScannerFragment", "updateNetwork returned -1")
-                        }
+
+                        enableNetwork(wifiConfiguration?.networkId!!, true)
                     }
-
-                    wifiManager.enableNetwork(wifiConfiguration?.networkId!!, true)
                 }
             }
         }

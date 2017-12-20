@@ -14,13 +14,12 @@ import kotlinx.android.synthetic.main.fragment_reader.*
 
 
 class ReaderFragment : Fragment() {
-    private lateinit var listener: Listener
-    private lateinit var fragment: ScannerFragment
+    private val listener: Listener = activity as Listener
+    private var fragment: ScannerFragment = childFragmentManager.findFragmentById(R.id.scanner_fragment) as ScannerFragment
 
     companion object {
-        fun newInstance(listener: Listener): ReaderFragment {
+        fun newInstance(): ReaderFragment {
             val fragment = ReaderFragment()
-            fragment.listener = listener
             return fragment
         }
     }
@@ -29,8 +28,7 @@ class ReaderFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        fragment = childFragmentManager.findFragmentById(R.id.scanner_fragment) as ScannerFragment
-        reader_flash_button.setOnClickListener({fragment.onFlashButton()})
+        reader_flash_button.setOnClickListener({ fragment.onFlashButton() })
         MainActivity.checkPermissionAndAskIfItIsNeeded(activity, Manifest.permission.CAMERA)
     }
 }

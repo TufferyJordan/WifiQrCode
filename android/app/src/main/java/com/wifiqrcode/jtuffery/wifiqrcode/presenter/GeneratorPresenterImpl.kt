@@ -21,7 +21,7 @@ class GeneratorPresenterImpl(val view: GeneratorView) : GeneratorPresenter {
     override fun refreshScanResult(results: List<ScanResult>?) {
         val ssids = ArrayList<String>()
         results?.forEach { ssids.add(it.SSID) }
-        view.notifySsidsChanged(ssids)
+        view.notifySsidsChanged(ssids.filter { it.isNotEmpty() })
     }
 }
 
