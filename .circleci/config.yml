@@ -1,12 +1,10 @@
-# Java Gradle CircleCI 2.0 configuration file
-#
-# Check https://circleci.com/docs/2.0/language-java/ for more details
+# Android Gradle CircleCI 2.0 configuration file
 #
 # https://circleci.com/docs/2.0/language-android/
 version: 2
 jobs:
   build:
-    working_directory: ~/repo/android
+    working_directory: ~/project/android
     docker:
       - image: circleci/android:api-26-alpha
 
@@ -33,7 +31,7 @@ jobs:
           command: ./gradlew lint test
 
       - store_artifacts:
-          path: ap/build/reports
+          path: app/build/reports
           destination: reports
 
       - store_test_results:
