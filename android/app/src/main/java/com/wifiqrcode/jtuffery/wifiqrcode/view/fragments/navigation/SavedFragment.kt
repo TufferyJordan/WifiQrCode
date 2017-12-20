@@ -9,21 +9,11 @@ import com.wifiqrcode.jtuffery.wifiqrcode.R
 import com.wifiqrcode.jtuffery.wifiqrcode.view.activities.Listener
 
 class SavedFragment : Fragment() {
-    private var listener: Listener? = null
+    private var listener: Listener? = activity as Listener
+
     companion object {
-        fun newInstance(listener: Listener): SavedFragment {
-            val fragment = SavedFragment()
-            fragment.listener = listener
-            return fragment
-        }
+        fun newInstance(): SavedFragment = SavedFragment()
     }
+
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? = layoutInflater.inflate(R.layout.fragment_saved, container, false)
-
-    override fun onStart() {
-        super.onStart()
-    }
-
-    override fun onStop() {
-        super.onStop()
-    }
 }

@@ -25,30 +25,24 @@ import kotlinx.android.synthetic.main.fragment_generator.*
 
 
 class GeneratorFragment : Fragment(), GeneratorView {
-    private var listener: Listener? = null
-
-    private var wifiManager: WifiManager? = null
-
+    private var listener: Listener = activity as Listener
+    private var wifiManager: WifiManager = activity.applicationContext.getSystemService(Service.WIFI_SERVICE) as WifiManager
     private var presenter: GeneratorPresenter? = null
 
+    private var ssidsValues = listOf<String>()
+    private val ssidsAdapter = ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, ssidsValues)
+    private val securityTypeValues = arrayListOf(SecurityType.WPA, SecurityType.WPA2, SecurityType.WEP)
+    private val securityAdapter = ArrayAdapter<SecurityType>(context, android.R.layout.simple_spinner_item, securityTypeValues)
+
     companion object {
-        fun newInstance(listener: Listener): GeneratorFragment {
-            val fragment = GeneratorFragment()
-            fragment.listener = listener
-            return fragment
-        }
+        fun newInstance(): GeneratorFragment = GeneratorFragment()
     }
 
-    val receiver: BroadcastReceiver = object : BroadcastReceiver() {
+    private val receiver: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(p0: Context?, p1: Intent?) {
             when (p1?.action) {
-                WifiManager.SCAN_RESULTS_AVAILABLE_ACTION -> {
-                    presenter?.refreshScanResult(wifiManager?.scanResults)
-                }
-                MainActivity.ACTION_REQUEST_PERMISSION_WRITE_EXTERNAL_STORAGE_GRANTED -> {
-                    wifiManager = activity.applicationContext.getSystemService(Service.WIFI_SERVICE) as WifiManager
-                    wifiManager?.startScan()
-                }
+                WifiManager.SCAN_RESULTS_AVAILABLE_ACTION -> presenter?.refreshScanResult(wifiManager.scanResults)
+                MainActivity.ACTION_REQUEST_PERMISSION_WRITE_EXTERNAL_STORAGE_GRANTED -> wifiManager.startScan()
             }
         }
     }
@@ -62,23 +56,24 @@ class GeneratorFragment : Fragment(), GeneratorView {
         LocalBroadcastManager.getInstance(context).registerReceiver(receiver, IntentFilter(MainActivity.ACTION_REQUEST_PERMISSION_WRITE_EXTERNAL_STORAGE_GRANTED))
         presenter = GeneratorPresenterImpl(this)
 
-        qr_code_generate_button.setOnClickListener({
+        qr_code_generate_button.setOnClickListener {
             presenter?.generateQrCode(
                     ssid_spinner.selectedItem as String,
                     password_edit_text.text.toString(),
                     security_spinner.selectedItem as SecurityType)
-        })
+        }
 
-        val adapter = ArrayAdapter<SecurityType>(context, android.R.layout.simple_spinner_item, SecurityType.values())
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        security_spinner.adapter = adapter
+        ssidsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        ssid_spinner.adapter = ssidsAdapter
+
+        securityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        security_spinner.adapter = securityAdapter
 
         MainActivity.checkPermissionAndAskIfItIsNeeded(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE)
         MainActivity.checkPermissionAndAskIfItIsNeeded(activity, Manifest.permission.ACCESS_COARSE_LOCATION)
         MainActivity.checkPermissionAndAskIfItIsNeeded(activity, Manifest.permission.ACCESS_FINE_LOCATION)
 
-        wifiManager = activity.applicationContext.getSystemService(Service.WIFI_SERVICE) as WifiManager
-        wifiManager?.startScan()
+        wifiManager.startScan()
     }
 
     override fun onStop() {
@@ -100,10 +95,8 @@ class GeneratorFragment : Fragment(), GeneratorView {
     }
 
     override fun notifySsidsChanged(ssids: List<String>) {
-        val adapter = ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, ssids)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        ssid_spinner.adapter = adapter
-
+        ssidsValues = ssids
+        ssidsAdapter.notifyDataSetChanged()
         if (ssids.isNotEmpty()) ssid_spinner.setSelection(0)
     }
 

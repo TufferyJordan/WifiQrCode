@@ -17,9 +17,9 @@ import com.wifiqrcode.jtuffery.wifiqrcode.view.fragments.navigation.SavedFragmen
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), Listener {
-    private var savedFragment: SavedFragment? = SavedFragment.newInstance(this)
-    private var readerFragment: ReaderFragment? = ReaderFragment.newInstance(this)
-    private var generatorFragment: GeneratorFragment? = GeneratorFragment.newInstance(this)
+    private var savedFragment: SavedFragment? = SavedFragment.newInstance()
+    private var readerFragment: ReaderFragment? = ReaderFragment.newInstance()
+    private var generatorFragment: GeneratorFragment? = GeneratorFragment.newInstance()
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
@@ -47,20 +47,15 @@ class MainActivity : AppCompatActivity(), Listener {
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        if (requestCode == MainActivity.REQUEST_PERMISSION_CAMERA) {
-            if (!grantResults.contains(PackageManager.PERMISSION_GRANTED)) {
+        when (requestCode) {
+            MainActivity.REQUEST_PERMISSION_CAMERA -> if (!grantResults.contains(PackageManager.PERMISSION_GRANTED)) {
                 goToGeneratorFragment()
             }
-        } else if (requestCode == MainActivity.REQUEST_PERMISSION_CHANGE_WIFI_STATE) {
-            LocalBroadcastManager.getInstance(this).sendBroadcast(Intent(MainActivity.ACTION_REQUEST_PERMISSION_CHANGE_WIFI_STATE_GRANTED))
-        } else if (requestCode == MainActivity.REQUEST_PERMISSION_WRITE_EXTERNAL_STORAGE) {
-            LocalBroadcastManager.getInstance(this).sendBroadcast(Intent(MainActivity.ACTION_REQUEST_PERMISSION_WRITE_EXTERNAL_STORAGE_GRANTED))
-        } else if (requestCode == MainActivity.REQUEST_PERMISSION_ACCESS_COARSE_LOCATION) {
-            LocalBroadcastManager.getInstance(this).sendBroadcast(Intent(MainActivity.ACTION_REQUEST_PERMISSION_ACCESS_COARSE_LOCATION))
-        } else if (requestCode == MainActivity.REQUEST_PERMISSION_ACCESS_FINE_LOCATION) {
-            LocalBroadcastManager.getInstance(this).sendBroadcast(Intent(MainActivity.ACTION_REQUEST_PERMISSION_ACCESS_FINE_LOCATION))
-        } else {
-            super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+            MainActivity.REQUEST_PERMISSION_CHANGE_WIFI_STATE -> LocalBroadcastManager.getInstance(this).sendBroadcast(Intent(MainActivity.ACTION_REQUEST_PERMISSION_CHANGE_WIFI_STATE_GRANTED))
+            MainActivity.REQUEST_PERMISSION_WRITE_EXTERNAL_STORAGE -> LocalBroadcastManager.getInstance(this).sendBroadcast(Intent(MainActivity.ACTION_REQUEST_PERMISSION_WRITE_EXTERNAL_STORAGE_GRANTED))
+            MainActivity.REQUEST_PERMISSION_ACCESS_COARSE_LOCATION -> LocalBroadcastManager.getInstance(this).sendBroadcast(Intent(MainActivity.ACTION_REQUEST_PERMISSION_ACCESS_COARSE_LOCATION))
+            MainActivity.REQUEST_PERMISSION_ACCESS_FINE_LOCATION -> LocalBroadcastManager.getInstance(this).sendBroadcast(Intent(MainActivity.ACTION_REQUEST_PERMISSION_ACCESS_FINE_LOCATION))
+            else -> super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         }
     }
 
@@ -99,26 +94,22 @@ class MainActivity : AppCompatActivity(), Listener {
             }
         }
 
-        private fun getRightRequestCode(permission: String): Int {
-            return when (permission) {
-                Manifest.permission.CAMERA -> REQUEST_PERMISSION_CAMERA
-                Manifest.permission.WRITE_EXTERNAL_STORAGE -> REQUEST_PERMISSION_WRITE_EXTERNAL_STORAGE
-                Manifest.permission.CHANGE_WIFI_STATE -> REQUEST_PERMISSION_CHANGE_WIFI_STATE
-                Manifest.permission.ACCESS_COARSE_LOCATION -> REQUEST_PERMISSION_ACCESS_COARSE_LOCATION
-                Manifest.permission.ACCESS_FINE_LOCATION -> REQUEST_PERMISSION_ACCESS_FINE_LOCATION
-                else -> throw IllegalArgumentException("It's not the right permission !")
-            }
+        private fun getRightRequestCode(permission: String): Int = when (permission) {
+            Manifest.permission.CAMERA -> REQUEST_PERMISSION_CAMERA
+            Manifest.permission.WRITE_EXTERNAL_STORAGE -> REQUEST_PERMISSION_WRITE_EXTERNAL_STORAGE
+            Manifest.permission.CHANGE_WIFI_STATE -> REQUEST_PERMISSION_CHANGE_WIFI_STATE
+            Manifest.permission.ACCESS_COARSE_LOCATION -> REQUEST_PERMISSION_ACCESS_COARSE_LOCATION
+            Manifest.permission.ACCESS_FINE_LOCATION -> REQUEST_PERMISSION_ACCESS_FINE_LOCATION
+            else -> throw IllegalArgumentException("It's not the right permission !")
         }
 
-        private fun getRightActionRequest(permission: String): String {
-            return when (permission) {
-                Manifest.permission.CAMERA -> ACTION_REQUEST_PERMISSION_CAMERA
-                Manifest.permission.CHANGE_WIFI_STATE -> ACTION_REQUEST_PERMISSION_CHANGE_WIFI_STATE_GRANTED
-                Manifest.permission.WRITE_EXTERNAL_STORAGE -> ACTION_REQUEST_PERMISSION_WRITE_EXTERNAL_STORAGE_GRANTED
-                Manifest.permission.ACCESS_COARSE_LOCATION -> ACTION_REQUEST_PERMISSION_ACCESS_COARSE_LOCATION
-                Manifest.permission.ACCESS_FINE_LOCATION -> ACTION_REQUEST_PERMISSION_ACCESS_FINE_LOCATION
-                else -> throw IllegalArgumentException("It's not the right permission !")
-            }
+        private fun getRightActionRequest(permission: String): String = when (permission) {
+            Manifest.permission.CAMERA -> ACTION_REQUEST_PERMISSION_CAMERA
+            Manifest.permission.CHANGE_WIFI_STATE -> ACTION_REQUEST_PERMISSION_CHANGE_WIFI_STATE_GRANTED
+            Manifest.permission.WRITE_EXTERNAL_STORAGE -> ACTION_REQUEST_PERMISSION_WRITE_EXTERNAL_STORAGE_GRANTED
+            Manifest.permission.ACCESS_COARSE_LOCATION -> ACTION_REQUEST_PERMISSION_ACCESS_COARSE_LOCATION
+            Manifest.permission.ACCESS_FINE_LOCATION -> ACTION_REQUEST_PERMISSION_ACCESS_FINE_LOCATION
+            else -> throw IllegalArgumentException("It's not the right permission !")
         }
     }
 }

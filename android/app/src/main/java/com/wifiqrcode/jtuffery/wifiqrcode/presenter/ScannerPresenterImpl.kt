@@ -6,26 +6,27 @@ import com.wifiqrcode.jtuffery.wifiqrcode.model.WiFiDAO
 import com.wifiqrcode.jtuffery.wifiqrcode.view.fragments.others.ScannerView
 
 class ScannerPresenterImpl : ScannerPresenter {
-
     override var view: ScannerView? = null
 
     override fun receiveJSON(json: String?) {
         val wifi = WiFiDAO.fromJsonToString(json)
-        val wifiConfiguration = WifiConfiguration()
-        wifiConfiguration.SSID = "\"${wifi.ssid}\""
 
-        when (wifi.securityType) {
-            SecurityType.NONE -> {
-                wifiConfiguration.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE)
-            }
-            SecurityType.WEP -> {
-                wifiConfiguration.wepKeys[0] = "\"${wifi.password}\""
-                wifiConfiguration.wepTxKeyIndex = 0
-                wifiConfiguration.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE)
-                wifiConfiguration.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.WEP40)
-            }
-            else -> {
-                wifiConfiguration.preSharedKey = "\"${wifi.password}\""
+        if (wifi == null) {
+            view?.showBadScannedQrCode()
+            return
+        }
+
+        val wifiConfiguration = WifiConfiguration().apply {
+            SSID = "\"${wifi.ssid}\""
+            when (wifi.securityType) {
+                SecurityType.NONE -> allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE)
+                SecurityType.WEP -> {
+                    wepKeys[0] = "\"${wifi.password}\""
+                    wepTxKeyIndex = 0
+                    allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE)
+                    allowedGroupCiphers.set(WifiConfiguration.GroupCipher.WEP40)
+                }
+                else -> preSharedKey = "\"${wifi.password}\""
             }
         }
         view?.handleWifiConnexionScanned(wifiConfiguration)
