@@ -91,7 +91,7 @@ jobs:
 
 workflows:
   version: 2
-  stage:
+  build:
     jobs:
       - build_debug
       - build_release
