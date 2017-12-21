@@ -56,6 +56,8 @@ jobs:
     docker:
       - image: circleci/android:api-27-alpha
     steps:
+      - checkout : 
+          path: ~/project
       - run: 
           name: Grant execution to Docker for the gradlew file
           command: sudo chmod +x gradlew
@@ -77,6 +79,8 @@ jobs:
     docker:
       - image: circleci/android:api-27-alpha
     steps:
+      - checkout : 
+          path: ~/project
       - run: 
           name: Grant execution to Docker for the gradlew file
           command: sudo chmod +x gradlew
@@ -89,6 +93,8 @@ jobs:
     docker:
       - image: circleci/android:api-27-alpha
     steps:
+      - checkout : 
+          path: ~/project
       - run: 
           name: Grant execution to Docker for the gradlew file
           command: sudo chmod +x gradlew
