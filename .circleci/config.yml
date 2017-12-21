@@ -11,6 +11,11 @@ jobs:
     environment:
       JVM_OPTS: -Xmx3200m
     
+    filters:
+      branches:
+        only:
+          - master
+
     steps:
       - checkout : 
           path: ~/project
