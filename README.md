@@ -14,6 +14,7 @@ For this purpose, The Minimum Valuable Product will have 3 core features :
  * [BarcodeScanner](https://github.com/dm77/barcodescanner)
  * [Mockito](https://github.com/mockito/mockito)
  * [RXKotlin](https://github.com/ReactiveX/RxKotlin)
+ * [Dagger 2](https://github.com/google/dagger)
 
 ## [License](LICENSE)
 
