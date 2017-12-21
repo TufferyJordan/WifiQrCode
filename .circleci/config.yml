@@ -22,11 +22,6 @@ jobs:
           name: Grant execution to Docker for the gradlew file
           command: sudo chmod +x gradlew
 
- #     - run: 
- #         name: Download Dependencies
- #         command: ./gradlew androidDependencies
-
-
       - run:
           name: Build Debug
           command: ./gradlew assembleDebug
@@ -35,10 +30,10 @@ jobs:
           path: app/build/outputs/apk/debug/app-debug.apk
           destination: app-debug.apk
 
-      - save_cache:
-          paths:
-            - ~/.gradle
-          key: jars-{{ checksum "build.gradle" }}
+ #     - save_cache:
+ #         paths:
+#            - ~/.gradle
+ #         key: jars-{{ checksum "build.gradle" }}
 
       - run:
           name: Run Tests
