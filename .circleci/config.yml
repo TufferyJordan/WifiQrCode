@@ -91,14 +91,10 @@ jobs:
 
 workflows:
   version: 2
-  build:
+  stage:
     jobs:
       - build_debug
       - build_release
       - run_unit_tests
-      - upload_debug_to_beta_crashlytics:
-        requires:
-          - build_debug
-      - upload_release_to_beta_crashlytics:
-        requires:
-          - build_release
+      - upload_debug_to_beta_crashlytics
+      - upload_release_to_beta_crashlytics
