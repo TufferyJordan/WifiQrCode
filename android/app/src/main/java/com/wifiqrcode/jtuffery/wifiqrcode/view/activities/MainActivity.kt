@@ -10,11 +10,15 @@ import android.support.v4.app.FragmentActivity
 import android.support.v4.content.ContextCompat
 import android.support.v4.content.LocalBroadcastManager
 import android.support.v7.app.AppCompatActivity
+import com.crashlytics.android.Crashlytics
 import com.wifiqrcode.jtuffery.wifiqrcode.R
 import com.wifiqrcode.jtuffery.wifiqrcode.view.fragments.navigation.GeneratorFragment
 import com.wifiqrcode.jtuffery.wifiqrcode.view.fragments.navigation.ReaderFragment
 import com.wifiqrcode.jtuffery.wifiqrcode.view.fragments.navigation.SavedFragment
+import io.fabric.sdk.android.Fabric
 import kotlinx.android.synthetic.main.activity_main.*
+
+
 
 class MainActivity : AppCompatActivity(), Listener {
     private var savedFragment: SavedFragment? = SavedFragment.newInstance()
@@ -42,6 +46,7 @@ class MainActivity : AppCompatActivity(), Listener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        Fabric.with(this, Crashlytics())
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         navigation.selectedItemId = R.id.navigation_qr_code_reader
     }

@@ -19,20 +19,18 @@ import com.wifiqrcode.jtuffery.wifiqrcode.R
 import com.wifiqrcode.jtuffery.wifiqrcode.model.SecurityType
 import com.wifiqrcode.jtuffery.wifiqrcode.presenter.GeneratorPresenter
 import com.wifiqrcode.jtuffery.wifiqrcode.presenter.GeneratorPresenterImpl
-import com.wifiqrcode.jtuffery.wifiqrcode.view.activities.Listener
 import com.wifiqrcode.jtuffery.wifiqrcode.view.activities.MainActivity
 import kotlinx.android.synthetic.main.fragment_generator.*
 
 
 class GeneratorFragment : Fragment(), GeneratorView {
-    private var listener: Listener = activity as Listener
-    private var wifiManager: WifiManager = activity.applicationContext.getSystemService(Service.WIFI_SERVICE) as WifiManager
+    private lateinit var wifiManager: WifiManager
     private var presenter: GeneratorPresenter? = null
 
     private var ssidsValues = listOf<String>()
-    private val ssidsAdapter = ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, ssidsValues)
+    private lateinit var ssidsAdapter: ArrayAdapter<String>
     private val securityTypeValues = arrayListOf(SecurityType.WPA, SecurityType.WPA2, SecurityType.WEP)
-    private val securityAdapter = ArrayAdapter<SecurityType>(context, android.R.layout.simple_spinner_item, securityTypeValues)
+    private lateinit var securityAdapter: ArrayAdapter<SecurityType>
 
     companion object {
         fun newInstance(): GeneratorFragment = GeneratorFragment()
@@ -47,13 +45,16 @@ class GeneratorFragment : Fragment(), GeneratorView {
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? = layoutInflater.inflate(R.layout.fragment_generator, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        wifiManager = activity?.applicationContext?.getSystemService(Service.WIFI_SERVICE) as WifiManager
+        return layoutInflater.inflate(R.layout.fragment_generator, container, false)
+    }
 
     override fun onStart() {
         super.onStart()
 
-        context.registerReceiver(receiver, IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION))
-        LocalBroadcastManager.getInstance(context).registerReceiver(receiver, IntentFilter(MainActivity.ACTION_REQUEST_PERMISSION_WRITE_EXTERNAL_STORAGE_GRANTED))
+        activity?.registerReceiver(receiver, IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION))
+        LocalBroadcastManager.getInstance(activity!!).registerReceiver(receiver, IntentFilter(MainActivity.ACTION_REQUEST_PERMISSION_WRITE_EXTERNAL_STORAGE_GRANTED))
         presenter = GeneratorPresenterImpl(this)
 
         qr_code_generate_button.setOnClickListener {
@@ -63,23 +64,25 @@ class GeneratorFragment : Fragment(), GeneratorView {
                     security_spinner.selectedItem as SecurityType)
         }
 
+        ssidsAdapter = ArrayAdapter(context, android.R.layout.simple_spinner_item, ssidsValues)
         ssidsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         ssid_spinner.adapter = ssidsAdapter
 
+        securityAdapter = ArrayAdapter(context, android.R.layout.simple_spinner_item, securityTypeValues)
         securityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         security_spinner.adapter = securityAdapter
 
-        MainActivity.checkPermissionAndAskIfItIsNeeded(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-        MainActivity.checkPermissionAndAskIfItIsNeeded(activity, Manifest.permission.ACCESS_COARSE_LOCATION)
-        MainActivity.checkPermissionAndAskIfItIsNeeded(activity, Manifest.permission.ACCESS_FINE_LOCATION)
+        MainActivity.checkPermissionAndAskIfItIsNeeded(activity!!, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        MainActivity.checkPermissionAndAskIfItIsNeeded(activity!!, Manifest.permission.ACCESS_COARSE_LOCATION)
+        MainActivity.checkPermissionAndAskIfItIsNeeded(activity!!, Manifest.permission.ACCESS_FINE_LOCATION)
 
         wifiManager.startScan()
     }
 
     override fun onStop() {
         presenter = null
-        LocalBroadcastManager.getInstance(context).unregisterReceiver(receiver)
-        context.unregisterReceiver(receiver)
+        LocalBroadcastManager.getInstance(context!!).unregisterReceiver(receiver)
+        context!!.unregisterReceiver(receiver)
         super.onStop()
     }
 

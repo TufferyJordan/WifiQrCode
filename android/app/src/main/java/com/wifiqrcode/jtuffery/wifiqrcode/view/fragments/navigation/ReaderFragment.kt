@@ -14,8 +14,7 @@ import kotlinx.android.synthetic.main.fragment_reader.*
 
 
 class ReaderFragment : Fragment() {
-    private val listener: Listener = activity as Listener
-    private var fragment: ScannerFragment = childFragmentManager.findFragmentById(R.id.scanner_fragment) as ScannerFragment
+    private lateinit var fragment: ScannerFragment
 
     companion object {
         fun newInstance(): ReaderFragment {
@@ -24,11 +23,12 @@ class ReaderFragment : Fragment() {
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? = layoutInflater.inflate(R.layout.fragment_reader, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? = layoutInflater.inflate(R.layout.fragment_reader, container, false)
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        fragment = childFragmentManager.findFragmentById(R.id.scanner_fragment) as ScannerFragment
         reader_flash_button.setOnClickListener({ fragment.onFlashButton() })
-        MainActivity.checkPermissionAndAskIfItIsNeeded(activity, Manifest.permission.CAMERA)
+        MainActivity.checkPermissionAndAskIfItIsNeeded(activity!!, Manifest.permission.CAMERA)
     }
 }
