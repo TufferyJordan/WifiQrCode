@@ -18,7 +18,9 @@ jobs:
           keys:
           - jars-{{ checksum "build.gradle" }}-{{ checksum "app/build.gradle"}}
 
-      - run: sudo chmod +x gradlew
+      - run: 
+          name: Grant execution to Docker for the gradlew file
+          command: sudo chmod +x gradlew
 
       - run: 
           name: Download Dependencies
@@ -39,5 +41,9 @@ jobs:
 
       - store_test_results:
           path: app/build/test-results
+
+      - run:
+          name: Upload on Beta
+          command: gradle crashlyticsUploadDistributionDebug
 
 
