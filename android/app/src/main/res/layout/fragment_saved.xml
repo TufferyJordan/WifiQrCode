@@ -4,4 +4,12 @@
     android:layout_height="match_parent"
     android:background="#FF0000">
 
+    <Button
+        android:id="@+id/force_crash_button"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="Force Crash!"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+
 </android.support.constraint.ConstraintLayout>

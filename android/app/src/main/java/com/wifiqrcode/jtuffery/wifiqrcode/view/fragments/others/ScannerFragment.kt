@@ -35,7 +35,7 @@ class ScannerFragment : Fragment(), ZXingScannerView.ResultHandler, ScannerView 
         override fun onReceive(context: Context?, intent: Intent?) {
             when (intent?.action) {
                 MainActivity.ACTION_REQUEST_PERMISSION_CHANGE_WIFI_STATE_GRANTED -> {
-                    (activity.applicationContext.getSystemService(Service.WIFI_SERVICE) as WifiManager).apply {
+                    (activity?.applicationContext?.getSystemService(Service.WIFI_SERVICE) as WifiManager).apply {
                         if (!isWifiEnabled) isWifiEnabled = true
                         disconnect()
 
@@ -61,7 +61,7 @@ class ScannerFragment : Fragment(), ZXingScannerView.ResultHandler, ScannerView 
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         scannerView = ZXingScannerView(activity)
         presenter = ScannerPresenterImpl()
         scannerView.setResultHandler(this)
@@ -72,13 +72,13 @@ class ScannerFragment : Fragment(), ZXingScannerView.ResultHandler, ScannerView 
         super.onStart()
         presenter.view = this
 
-        LocalBroadcastManager.getInstance(context).registerReceiver(receiver, IntentFilter(MainActivity.ACTION_REQUEST_PERMISSION_CHANGE_WIFI_STATE_GRANTED))
+        LocalBroadcastManager.getInstance(context!!).registerReceiver(receiver, IntentFilter(MainActivity.ACTION_REQUEST_PERMISSION_CHANGE_WIFI_STATE_GRANTED))
         scannerView.startCamera()
     }
 
     override fun onStop() {
         scannerView.stopCamera()
-        LocalBroadcastManager.getInstance(context).unregisterReceiver(receiver)
+        LocalBroadcastManager.getInstance(context!!).unregisterReceiver(receiver)
 
         presenter.view = null
         super.onStop()
@@ -92,7 +92,7 @@ class ScannerFragment : Fragment(), ZXingScannerView.ResultHandler, ScannerView 
 
     override fun handleWifiConnexionScanned(wifiConfiguration: WifiConfiguration) {
         this.wifiConfiguration = wifiConfiguration
-        MainActivity.checkPermissionAndAskIfItIsNeeded(activity, Manifest.permission.CHANGE_WIFI_STATE)
+        MainActivity.checkPermissionAndAskIfItIsNeeded(activity!!, Manifest.permission.CHANGE_WIFI_STATE)
     }
 
     override fun showWifiConnexionSuccess() {
