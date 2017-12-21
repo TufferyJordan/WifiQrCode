@@ -84,8 +84,8 @@ workflows:
     jobs:
       - run_unit_tests
       - build_debug:
-        requires:
-          - run_unit_tests
+          requires:
+            - run_unit_tests
       - build_release:
-        requires:
-          - run_unit_tests
+          requires:
+            - run_unit_tests
