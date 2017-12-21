@@ -36,8 +36,8 @@ jobs:
           command: ./gradlew assembleDebug
 
       - store_artifacts:
-          path: D:\Dev\QRCode\android\app\build\outputs\apk\debug\app-debug.apk
-          destination: apk\app-debug.apk
+          path: app\build\outputs\apk\debug\app-debug.apk
+          destination: apk
 
       - run:
           name: Run Tests
