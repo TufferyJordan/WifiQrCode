@@ -68,8 +68,8 @@ jobs:
 
 workflows:
   version: 2
-    build:
-      jobs:
-        - hello_world_build
-        - hello_world_tests
-        - build
+  build:
+    jobs:
+      - hello_world_build
+      - hello_world_tests
+      - build
