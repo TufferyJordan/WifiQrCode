@@ -96,13 +96,11 @@ workflows:
       - build_debug
       - build_release
       - run_unit_tests
-
       - upload_debug_to_beta_crashlytics
-          requires:
-            - build_debug
-            - run_unit_tests
-
+        requires:
+          - build_debug
+          - run_unit_tests
       - upload_release_to_beta_crashlytics
-          requires:
-            - build_release
-            - run_unit_tests
+        requires:
+          - build_release
+          - run_unit_tests
