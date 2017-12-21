@@ -30,11 +30,6 @@ jobs:
           path: app/build/outputs/apk/debug/app-debug.apk
           destination: app-debug.apk
 
- #     - save_cache:
- #         paths:
-#            - ~/.gradle
- #         key: jars-{{ checksum "build.gradle" }}
-
       - run:
           name: Run Tests
           command: ./gradlew lint test
@@ -47,7 +42,7 @@ jobs:
           path: app/build/test-results
 
       - run:
-          name: Upload on Beta
+          name: Uploading on Beta
           command: ./gradlew crashlyticsUploadDistributionDebug
 
 
