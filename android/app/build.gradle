@@ -16,6 +16,7 @@ apply plugin: 'io.fabric'
 android {
     compileSdkVersion 27
     defaultConfig {
+        manifestPlaceholders = [ FABRIC_API_KEY:project.env.get("KEY_FABRIC_API") ]
         applicationId "com.wifiqrcode.jtuffery.wifiqrcode"
         minSdkVersion 21
         targetSdkVersion 27
