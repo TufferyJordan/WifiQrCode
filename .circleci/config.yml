@@ -2,6 +2,7 @@
 #
 # https://circleci.com/docs/2.0/language-android/
 version: 2
+
 jobs:
   build_debug:
     working_directory: ~/project/android
@@ -52,17 +53,17 @@ jobs:
 
   run_unit_tests:
     working_directory: ~/project/android
-      docker:
-        - image: circleci/android:api-27-alpha
-      steps:
-        - run:
-            name: Run Tests
-            command: ./gradlew lint test
-        - store_artifacts:
-            path: app/build/reports
-            destination: reports
-        - store_test_results:
-            path: app/build/test-results
+    docker:
+      - image: circleci/android:api-27-alpha
+    steps:
+      - run:
+          name: Run Tests
+          command: ./gradlew lint test
+      - store_artifacts:
+          path: app/build/reports
+          destination: reports
+      - store_test_results:
+          path: app/build/test-results
 
 
 
@@ -70,21 +71,21 @@ jobs:
 
   upload_debug_to_beta_crashlytics:
     working_directory: ~/project/android
-      docker:
-        - image: circleci/android:api-27-alpha
-      steps:
-        - run:
-            name: Uploading on Beta
-            command: ./gradlew crashlyticsUploadDistributionDebug
+    docker:
+      - image: circleci/android:api-27-alpha
+    steps:
+      - run:
+          name: Uploading on Beta
+          command: ./gradlew crashlyticsUploadDistributionDebug
 
   upload_release_to_beta_crashlytics:
     working_directory: ~/project/android
-      docker:
-        - image: circleci/android:api-27-alpha
-      steps:
-        - run:
-            name: Uploading on Beta
-            command: ./gradlew crashlyticsUploadDistributionRelease
+    docker:
+      - image: circleci/android:api-27-alpha
+    steps:
+      - run:
+          name: Uploading on Beta
+          command: ./gradlew crashlyticsUploadDistributionRelease
 
 
 
