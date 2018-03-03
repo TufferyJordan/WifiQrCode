@@ -48,13 +48,8 @@ jobs:
           name: Build Debug
           command: ./gradlew assembleRelease
       - store_artifacts:
-          path: app/build/outputs/apk/debug/app-release.apk
-          destination: app-release.apk
-      - run:
-          name: Uploading on Beta
-          command: ./gradlew crashlyticsUploadDistributionRelease
-
-
+          path: app/build/outputs/apk/debug/app-release-unsigned.apk
+          destination: app-release-unsigned.apk
 
   run_unit_tests:
     working_directory: ~/project/android
