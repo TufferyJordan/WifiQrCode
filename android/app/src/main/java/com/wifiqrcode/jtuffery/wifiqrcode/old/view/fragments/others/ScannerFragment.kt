@@ -1,4 +1,4 @@
-package com.wifiqrcode.jtuffery.wifiqrcode.view.fragments.others
+package com.wifiqrcode.jtuffery.wifiqrcode.old.view.fragments.others
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -18,9 +18,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.google.zxing.Result
-import com.wifiqrcode.jtuffery.wifiqrcode.presenter.ScannerPresenter
-import com.wifiqrcode.jtuffery.wifiqrcode.presenter.ScannerPresenterImpl
-import com.wifiqrcode.jtuffery.wifiqrcode.view.activities.MainActivity
+import com.wifiqrcode.jtuffery.wifiqrcode.old.presenter.ScannerPresenter
+import com.wifiqrcode.jtuffery.wifiqrcode.old.presenter.ScannerPresenterImpl
+import com.wifiqrcode.jtuffery.wifiqrcode.old.view.activities.MainActivity
 import me.dm7.barcodescanner.zxing.ZXingScannerView
 
 class ScannerFragment : Fragment(), ZXingScannerView.ResultHandler, ScannerView {

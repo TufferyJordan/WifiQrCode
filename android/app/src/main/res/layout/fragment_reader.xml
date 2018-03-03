@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/scanner_fragment"
-        android:name="com.wifiqrcode.jtuffery.wifiqrcode.view.fragments.others.ScannerFragment"
+        android:name="com.wifiqrcode.jtuffery.wifiqrcode.old.view.fragments.others.ScannerFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/reader_flash_button"

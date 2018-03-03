@@ -1,4 +1,4 @@
-package com.wifiqrcode.jtuffery.wifiqrcode.view.activities
+package com.wifiqrcode.jtuffery.wifiqrcode.old.view.activities
 
 import android.Manifest
 import android.content.Intent
@@ -12,9 +12,9 @@ import android.support.v4.content.LocalBroadcastManager
 import android.support.v7.app.AppCompatActivity
 import com.crashlytics.android.Crashlytics
 import com.wifiqrcode.jtuffery.wifiqrcode.R
-import com.wifiqrcode.jtuffery.wifiqrcode.view.fragments.navigation.GeneratorFragment
-import com.wifiqrcode.jtuffery.wifiqrcode.view.fragments.navigation.ReaderFragment
-import com.wifiqrcode.jtuffery.wifiqrcode.view.fragments.navigation.SavedFragment
+import com.wifiqrcode.jtuffery.wifiqrcode.old.view.fragments.navigation.GeneratorFragment
+import com.wifiqrcode.jtuffery.wifiqrcode.old.view.fragments.navigation.ReaderFragment
+import com.wifiqrcode.jtuffery.wifiqrcode.old.view.fragments.navigation.SavedFragment
 import io.fabric.sdk.android.Fabric
 import kotlinx.android.synthetic.main.activity_main.*
 

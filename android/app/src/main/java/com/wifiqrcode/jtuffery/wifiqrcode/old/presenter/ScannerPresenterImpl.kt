@@ -1,9 +1,9 @@
-package com.wifiqrcode.jtuffery.wifiqrcode.presenter
+package com.wifiqrcode.jtuffery.wifiqrcode.old.presenter
 
 import android.net.wifi.WifiConfiguration
-import com.wifiqrcode.jtuffery.wifiqrcode.model.SecurityType
-import com.wifiqrcode.jtuffery.wifiqrcode.model.WiFiDAO
-import com.wifiqrcode.jtuffery.wifiqrcode.view.fragments.others.ScannerView
+import com.wifiqrcode.jtuffery.wifiqrcode.old.model.SecurityType
+import com.wifiqrcode.jtuffery.wifiqrcode.old.model.WiFiDAO
+import com.wifiqrcode.jtuffery.wifiqrcode.old.view.fragments.others.ScannerView
 
 class ScannerPresenterImpl : ScannerPresenter {
     override var view: ScannerView? = null

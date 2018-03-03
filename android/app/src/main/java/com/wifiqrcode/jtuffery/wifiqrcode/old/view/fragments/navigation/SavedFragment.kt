@@ -1,4 +1,4 @@
-package com.wifiqrcode.jtuffery.wifiqrcode.view.fragments.navigation
+package com.wifiqrcode.jtuffery.wifiqrcode.old.view.fragments.navigation
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.wifiqrcode.jtuffery.wifiqrcode.R
-import com.wifiqrcode.jtuffery.wifiqrcode.view.activities.Listener
 import kotlinx.android.synthetic.main.fragment_saved.*
 
 class SavedFragment : Fragment() {

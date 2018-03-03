@@ -1,4 +1,4 @@
-package com.wifiqrcode.jtuffery.wifiqrcode.view.fragments.navigation
+package com.wifiqrcode.jtuffery.wifiqrcode.old.view.fragments.navigation
 
 import android.Manifest
 import android.os.Bundle
@@ -7,9 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.wifiqrcode.jtuffery.wifiqrcode.R
-import com.wifiqrcode.jtuffery.wifiqrcode.view.activities.Listener
-import com.wifiqrcode.jtuffery.wifiqrcode.view.activities.MainActivity
-import com.wifiqrcode.jtuffery.wifiqrcode.view.fragments.others.ScannerFragment
+import com.wifiqrcode.jtuffery.wifiqrcode.old.view.activities.MainActivity
+import com.wifiqrcode.jtuffery.wifiqrcode.old.view.fragments.others.ScannerFragment
 import kotlinx.android.synthetic.main.fragment_reader.*
 
 

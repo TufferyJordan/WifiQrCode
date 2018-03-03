@@ -1,4 +1,4 @@
-package com.wifiqrcode.jtuffery.wifiqrcode.model
+package com.wifiqrcode.jtuffery.wifiqrcode.old.model
 
 import com.google.gson.JsonObject
 import com.google.gson.JsonParseException

@@ -1,4 +1,4 @@
-package com.wifiqrcode.jtuffery.wifiqrcode.view.fragments.navigation
+package com.wifiqrcode.jtuffery.wifiqrcode.old.view.fragments.navigation
 
 import android.Manifest
 import android.app.Service
@@ -16,10 +16,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import com.wifiqrcode.jtuffery.wifiqrcode.R
-import com.wifiqrcode.jtuffery.wifiqrcode.model.SecurityType
-import com.wifiqrcode.jtuffery.wifiqrcode.presenter.GeneratorPresenter
-import com.wifiqrcode.jtuffery.wifiqrcode.presenter.GeneratorPresenterImpl
-import com.wifiqrcode.jtuffery.wifiqrcode.view.activities.MainActivity
+import com.wifiqrcode.jtuffery.wifiqrcode.old.model.SecurityType
+import com.wifiqrcode.jtuffery.wifiqrcode.old.presenter.GeneratorPresenter
+import com.wifiqrcode.jtuffery.wifiqrcode.old.presenter.GeneratorPresenterImpl
+import com.wifiqrcode.jtuffery.wifiqrcode.old.view.activities.MainActivity
 import kotlinx.android.synthetic.main.fragment_generator.*
 
 
