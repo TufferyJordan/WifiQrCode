@@ -40,7 +40,6 @@ class GeneratorFragment : Fragment(), GeneratorView {
         override fun onReceive(p0: Context?, p1: Intent?) {
             when (p1?.action) {
                 WifiManager.SCAN_RESULTS_AVAILABLE_ACTION -> presenter?.refreshScanResult(wifiManager.scanResults)
-                MainActivity.ACTION_REQUEST_PERMISSION_WRITE_EXTERNAL_STORAGE_GRANTED -> wifiManager.startScan()
             }
         }
     }
@@ -54,14 +53,13 @@ class GeneratorFragment : Fragment(), GeneratorView {
         super.onStart()
 
         activity?.registerReceiver(receiver, IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION))
-        LocalBroadcastManager.getInstance(activity!!).registerReceiver(receiver, IntentFilter(MainActivity.ACTION_REQUEST_PERMISSION_WRITE_EXTERNAL_STORAGE_GRANTED))
         presenter = GeneratorPresenterImpl(this)
 
         qr_code_generate_button.setOnClickListener {
             presenter?.generateQrCode(
-                    ssid_spinner.selectedItem as String,
+                    ssid_spinner.selectedItem,
                     password_edit_text.text.toString(),
-                    security_spinner.selectedItem as SecurityType)
+                    security_spinner.selectedItem)
         }
 
         ssidsAdapter = ArrayAdapter(context, android.R.layout.simple_spinner_item, ssidsValues)
@@ -72,10 +70,7 @@ class GeneratorFragment : Fragment(), GeneratorView {
         securityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         security_spinner.adapter = securityAdapter
 
-        MainActivity.checkPermissionAndAskIfItIsNeeded(activity!!, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-        MainActivity.checkPermissionAndAskIfItIsNeeded(activity!!, Manifest.permission.ACCESS_COARSE_LOCATION)
-        MainActivity.checkPermissionAndAskIfItIsNeeded(activity!!, Manifest.permission.ACCESS_FINE_LOCATION)
-
+        enableButtons(false)
         wifiManager.startScan()
     }
 
@@ -86,7 +81,10 @@ class GeneratorFragment : Fragment(), GeneratorView {
         super.onStop()
     }
 
-    override fun showGeneratedQrCode(qrCode: Bitmap) {
+    override fun showGeneratedQrCode(qrCode: Bitmap?) {
+        if(qrCode == null) {
+            return
+        }
         generator_image_view_progress_bar.visibility = View.GONE
         qr_code_generated_image_view.visibility = View.VISIBLE
         qr_code_generated_image_view.setImageBitmap(qrCode)
@@ -110,7 +108,7 @@ class GeneratorFragment : Fragment(), GeneratorView {
 }
 
 interface GeneratorView {
-    fun showGeneratedQrCode(qrCode: Bitmap)
+    fun showGeneratedQrCode(qrCode: Bitmap?)
     fun showProgressBar()
     fun enableButtons(shouldBeEnabled: Boolean)
     fun notifySsidsChanged(ssids: List<String>)

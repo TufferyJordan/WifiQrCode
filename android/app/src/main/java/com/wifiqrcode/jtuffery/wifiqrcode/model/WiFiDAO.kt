@@ -1,19 +1,15 @@
-package com.wifiqrcode.jtuffery.wifiqrcode.old.model
+package com.wifiqrcode.jtuffery.wifiqrcode.model
 
 import com.google.gson.JsonObject
 import com.google.gson.JsonParseException
 import com.google.gson.JsonParser
 import org.json.JSONObject
 
-/**
- * {"ssid":"DXOEXT", "password":"waggery-laser-organdy", "securityType":"wpa"}
- * {"ssid":"Bbox-0C86DCF4-5GHz", "password":"3696A224F975235EFC1234D523513F", "securityType":"wpa"}
- */
-
 data class WiFiDAO(var ssid: String, var password: String, var securityType: SecurityType) {
     companion object {
         fun fromJsonToString(json: String?): WiFiDAO? {
             val jsonObject: JsonObject
+            if(json == null) return null
             try {
                 jsonObject = JsonParser().parse(json).asJsonObject
             } catch (e: JsonParseException) {
